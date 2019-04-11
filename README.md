@@ -1,2 +1,3 @@
-# dotfiles
 Current dotfiles
+* vim
+* git
