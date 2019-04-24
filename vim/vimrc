@@ -1,9 +1,9 @@
 call plug#begin('~/.vim/plugged')
   " Some default options preseted
   " (I remove some default config thanks to this)
-  Plug 'tpope/vim-sensible' 
+  Plug 'tpope/vim-sensible'
   " Linter
-  Plug 'w0rp/ale' 
+  Plug 'w0rp/ale'
   " theme
   Plug 'sonph/onehalf', {'rtp': 'vim/'}
   " Sintax hlgt
@@ -12,7 +12,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'pangloss/vim-javascript'
   Plug 'jparise/vim-graphql'
   Plug 'hail2u/vim-css3-syntax'
-  " Comment a motion with gc 
+  " Comment a motion with gc
   Plug 'tpope/vim-commentary'
   " files tree
   Plug 'scrooloose/nerdtree'
@@ -28,6 +28,9 @@ call plug#begin('~/.vim/plugged')
   Plug 'honza/vim-snippets'
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
+  Plug 'tpope/vim-fugitive'
+  " autocomplete js
+  Plug 'ternjs/tern_for_vim', { 'do' : 'npm install' }
 call plug#end()
 
 " Shortcut to open NERDTree
@@ -44,6 +47,9 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 
+" Run NERDTreeTabs on console vim startup
+let g:nerdtree_tabs_open_on_console_startup=1
+
 " Linter options
 let g:ale_linters = {
 \   'javascript': ['eslint'],
@@ -57,20 +63,24 @@ let g:ale_fix_on_save = 0
 " Color options
 colorscheme onehalfdark
 
-" Find files ctrlp 
+" Find files ctrlp
 " exclude folders in gitIgnore
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-let g:ctrlp_show_hidden = 1 
+let g:ctrlp_show_hidden = 1
+let g:ctrlp_prompt_mappings = {
+    \ 'AcceptSelection("e")': ['<2-LeftMouse>'],
+    \ 'AcceptSelection("t")': ['<cr>'],
+    \ }
 
-" remap for ctrl f 
-nmap     <C-F>f <Plug>CtrlSFPrompt                  
+" remap for ctrl f
+nmap     <C-F>f <Plug>CtrlSFPrompt
 vmap     <C-F>f <Plug>CtrlSFVwordPath
 vmap     <C-F>F <Plug>CtrlSFVwordExec
 nmap     <C-F>n <Plug>CtrlSFCwordPath
 nmap     <C-F>p <Plug>CtrlSFPwordPath
 
 " Snippets autocomplete config
-let g:UltiSnipsExpandTrigger="<tab>"               
+let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
@@ -83,14 +93,14 @@ vmap <C-_> :Commentary<CR>
 "################### Custon NO-PLUGIN CONFIG ###############
 
 " Turn off highlight match on press enter
-nnoremap <CR> :noh<CR><CR>                           
+nnoremap <CR> :noh<CR><CR>
 
 " Search case sensitive only when use Capitals letters to find
 :set ignorecase
 :set smartcase
 
 "Copy to clipboard on selection+Y
-noremap Y "*y   
+noremap Y "*y
 
 "navigate panes with ctrl jklh
 nnoremap <C-J> <C-W><C-J>
@@ -117,5 +127,15 @@ set shiftwidth=2
 " Number of spaces to use for a <Tab> during editing operations
 set softtabstop=2
 
-" Airline theme
+" Airline
 let g:airline_theme='solarized'
+
+" CtrlSF
+let g:ctrlsf_ignore_dir = ["node_modules","coverage","dist","public"]
+
+" Disable trackpad scroll
+set mouse=a
+
+" Save swap files in another place
+set directory^=$HOME/.vim/swp//
+
